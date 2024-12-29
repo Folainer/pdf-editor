@@ -119,10 +119,10 @@ const MenuBar = () => {
         setActiveMenu(null)
     }
 
-    const handleClick = (color : string) => {
-        const command = new ChangeBackgroundCommand(document.body.style.backgroundColor, color)
-        commandManager.execute(command)
-    }
+    // const handleClick = (color : string) => {
+    //     const command = new ChangeBackgroundCommand(document.body.style.backgroundColor, color)
+    //     commandManager.execute(command)
+    // }
 
 
     return (
