@@ -1,6 +1,6 @@
 import { useState } from "react"
 import './Header.scss'
-import { ChangeBackgroundCommand } from "../../Logic/Command/ChangeBackgroundCommand"
+// import { ChangeBackgroundCommand } from "../../Logic/Command/ChangeBackgroundCommand"
 import { useCommandManager } from "../CommandManagerProvider"
 
 const MenuBar = () => {
