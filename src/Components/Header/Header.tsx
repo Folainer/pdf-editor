@@ -1,10 +1,11 @@
 import MenuBar from "./MenuBar"
+import Toolbar from "./Toolbar"
 
 const Header = () => {
     return (
         <div>
             <MenuBar />
-            Header
+            <Toolbar /> 
         </div>
     )
 }

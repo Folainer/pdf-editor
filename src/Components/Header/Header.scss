@@ -1,3 +1,5 @@
+$hoverColor: rgba($color: #000000, $alpha: 0.1);
+
 .menubar {
     display: flex;
     font-family: sans-serif;
@@ -9,7 +11,7 @@
         position: relative;
 
         &:hover {
-            background-color: rgba($color: #000000, $alpha: 0.1);
+            background-color: $hoverColor;
         }
 
         .menubar__contextmenu {
@@ -27,10 +29,43 @@
                 padding: 5px 10px;
 
                 &:hover {
-                    background-color: rgba($color: #000000, $alpha: 0.1);
+                    background-color: $hoverColor;
                 }
             }
         }
     }
 
+}
+
+.toolbar {
+    font-family: sans-serif;
+    display: flex;
+    height: 50px;
+
+    .toolbar__section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .toolbar__sectionoptions {
+            height: 35px;
+            display: flex;
+        }
+
+        .toolbar__sectionname {
+            font-size: 12px;
+        }
+
+        .toolbar__sectionimage {
+            
+            img {
+                padding: 0px 3px;
+                height: 35px;
+            }
+
+            &:hover {
+                background-color: $hoverColor;
+            }
+        }
+    }
 }
