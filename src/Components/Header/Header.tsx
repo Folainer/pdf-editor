@@ -3,7 +3,7 @@ import Toolbar from "./Toolbar"
 
 const Header = () => {
     return (
-        <div>
+        <div className="header">
             <MenuBar />
             <Toolbar /> 
         </div>

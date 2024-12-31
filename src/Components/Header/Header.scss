@@ -1,4 +1,9 @@
 $hoverColor: rgba($color: #000000, $alpha: 0.1);
+$shodowColor: rgba($color: #000000, $alpha: .2);
+
+.header {
+    box-shadow: 0px 0px 5px $shodowColor;
+}
 
 .menubar {
     display: flex;
@@ -19,11 +24,12 @@ $hoverColor: rgba($color: #000000, $alpha: 0.1);
             top: 100%;
             left: 0;
             background-color: white;
-            box-shadow: 0 0 5px rgba($color: #000000, $alpha: .2);
+            box-shadow: 0 0 5px $shodowColor;
             white-space: nowrap;
             min-width: 150px;
             border-radius: 0 5px 5px 5px;
             overflow: hidden;
+            z-index: 10;
             
             .menubar__contextmenuitem {
                 padding: 5px 10px;
@@ -40,7 +46,16 @@ $hoverColor: rgba($color: #000000, $alpha: 0.1);
 .toolbar {
     font-family: sans-serif;
     display: flex;
+    align-items: center;
     height: 50px;
+
+    .toolbar__sectionseparator {
+        height: 30px;
+        width: 3px;
+        background-color: $shodowColor;
+        border-radius: 3px;
+        margin: 0 4px;
+    }
 
     .toolbar__section {
         display: flex;
@@ -63,9 +78,19 @@ $hoverColor: rgba($color: #000000, $alpha: 0.1);
                 height: 35px;
             }
 
-            &:hover {
-                background-color: $hoverColor;
-            }
+            // &:hover {
+            //     background-color: $hoverColor;
+            // }
+
+        }
+
+
+        .toolbar__sectionimage_enabled:hover {
+            background-color: $hoverColor;
+        }
+
+        .toolbar__sectionimage_disabled {
+            filter: invert(1) brightness(1); 
         }
     }
 }
