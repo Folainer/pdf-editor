@@ -48,10 +48,18 @@ $shodowColor: rgba($color: #000000, $alpha: .2);
     display: flex;
     align-items: center;
     height: 50px;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
 
     .toolbar__sectionseparator {
         height: 30px;
         width: 3px;
+        min-width: 3px;
         background-color: $shodowColor;
         border-radius: 3px;
         margin: 0 4px;
@@ -69,6 +77,7 @@ $shodowColor: rgba($color: #000000, $alpha: .2);
 
         .toolbar__sectionname {
             font-size: 12px;
+            user-select: none;
         }
 
         .toolbar__sectionimage {
@@ -101,11 +110,56 @@ $shodowColor: rgba($color: #000000, $alpha: .2);
 
             .toolbar__sectiontextspan {
                 margin: 0 4px;
+                user-select: none;
             }
 
             .toolbar__sectiontextinput {
                 width: 40px;
                 margin-right: 4px;
+                border: 1px solid gray;
+                border-radius: 5px;
+                padding: 3px;
+                outline: none;
+
+                &:focus {
+                    outline: 2px solid #0ad4db;
+                }
+            }
+
+            .toolbar__sectiontextinput_error {
+                border: 1px solid red;
+            }
+        }
+
+        .toolbar__sectioncheck {
+            display: flex;
+            align-items: center;
+
+            input {
+                height: 18px;
+                width: 18px;
+            }
+        }
+
+        .toolbar__sectionchoose {
+            position: relative;
+            align-self: center;
+            width: 100px;
+            height: 25px;
+            margin: 0 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+
+            .toolbar__sectionchooselist {
+                position: absolute;
+                // box-shadow: 0 0 5px $shodowColor;
+                z-index: 100;
+                top: 0;
+                height: 100%;
+                transform: translateY(-100%);
+                background-color: white;
+                border: 1px solid black;
+                // overflow: auto;
             }
         }
     }

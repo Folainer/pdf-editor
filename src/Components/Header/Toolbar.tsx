@@ -2,6 +2,8 @@ import { AppState, useAppState } from "../AppStateProvider"
 import ToolbarSection from "./ToolbarSection"
 import ToolbarSectionImage from './ToolbarSectionImage'
 import ToolbarSectionInput from "./ToolbarSectionInput"
+import ToolbarSectionCheck from "./ToolbarSectionCheck"
+import ToolbarSectionChoose from "./ToolbarSectionChoose"
 
 const Toolbar = () => {
     const emptyHandler = () => {
@@ -14,6 +16,25 @@ const Toolbar = () => {
     }
 
     const alignmentCheck = (state : AppState) => {
+        if (state.selectedElement) {
+            return true
+        }
+        return false
+    }
+
+    const positionCheck = (state : AppState) => {
+        if (state.selectedElement) {
+            return true
+        }
+        return false
+    }
+
+    const gridCheck = (state : AppState) => {
+        state
+        return true
+    }
+
+    const sizeCheck = (state : AppState) => {
         if (state.selectedElement) {
             return true
         }
@@ -96,20 +117,79 @@ const Toolbar = () => {
             ]
         },
         {
+            name: 'Size',
+            items: [
+                {
+                    type: 'input',
+                    title: 'Width',
+                    handler: emptyHandler,
+                    useCheck: sizeCheck
+                },
+                {
+                    type: 'input',
+                    title: 'Height',
+                    handler: emptyHandler,
+                    useCheck: sizeCheck
+                },
+            ]
+        },
+        {
             name:'Positioning',
             items: [
+                {
+                    type: 'check',
+                    title: 'Relative placement',
+                    handler: emptyHandler,
+                    useCheck: positionCheck
+                },
                 {
                     type: 'input',
                     title: 'X',
                     handler: emptyHandler,
-                    useCheck: emptyCheck
+                    useCheck: positionCheck
                 },
                 {
                     type: 'input',
                     title: 'Y',
                     handler: emptyHandler,
-                    useCheck: emptyCheck
+                    useCheck: positionCheck
                 },
+            ]
+        },
+        {
+            name: 'Grid',
+            items: [
+                {
+                    type: 'image',
+                    src: '/img/magnet.png',
+                    title: 'Use snapping',
+                    handler: emptyHandler,
+                    useCheck: gridCheck
+                },
+                {
+                    type: 'image',
+                    src: '/img/grid.png',
+                    title: 'Display grid',
+                    handler: emptyHandler,
+                    useCheck: gridCheck
+                },
+                {
+                    type: 'input',
+                    title: 'Gap',
+                    handler: emptyHandler,
+                    useCheck: gridCheck
+                },
+            ]
+        },
+        {
+            name: 'Template',
+            items: [
+                {
+                    type: 'choose',
+                    title: 'ChooseTemplate',
+                    handler: emptyHandler,
+                    useCheck: emptyCheck
+                }
             ]
         }
     ]
@@ -126,9 +206,13 @@ const Toolbar = () => {
                             {section.items.map(item => {
                                 const isEnabled = item.useCheck(appState)
                                 if (item.type === 'image' && 'src' in item) {
-                                    return <ToolbarSectionImage title={item.title} src={item.src} handler={isEnabled ? item.handler : null} isEnabled={isEnabled} />
+                                    return <ToolbarSectionImage title={item.title} src={item.src ?? ''} handler={isEnabled ? item.handler : null} isEnabled={isEnabled} />
                                 } else if (item.type === 'input') {
                                     return <ToolbarSectionInput title={item.title} handler={isEnabled ? item.handler : null} isEnabled={isEnabled} />
+                                } else if (item.type === 'check') {
+                                    return <ToolbarSectionCheck title={item.title} handler={isEnabled ? item.handler : null} isEnabled={isEnabled} /> 
+                                } else if (item.type === 'choose') {
+                                    return <ToolbarSectionChoose title={item.title} />
                                 }
                             })}
                         </ToolbarSection>
