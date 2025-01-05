@@ -7,38 +7,90 @@ $shodowColor: rgba($color: #000000, $alpha: .2);
 
 .menubar {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-family: sans-serif;
     user-select: none;
     cursor: pointer;
 
-    .menubar__item {
-        padding: 10px 5px;
-        position: relative;
+    .menubar__items {
+        display: flex;
 
-        &:hover {
-            background-color: $hoverColor;
+        .menubar__item {
+            padding: 10px 5px;
+            position: relative;
+    
+            &:hover {
+                background-color: $hoverColor;
+            }
+    
+            .menubar__contextmenu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: white;
+                box-shadow: 0 0 5px $shodowColor;
+                white-space: nowrap;
+                min-width: 150px;
+                border-radius: 0 5px 5px 5px;
+                overflow: hidden;
+                z-index: 10;
+                
+                .menubar__contextmenuitem {
+                    padding: 5px 10px;
+    
+                    &:hover {
+                        background-color: $hoverColor;
+                    }
+                }
+            }
+        }
+    }
+
+    .menubar__choose {
+        position: relative;
+        width: 150px;
+        height: 25px;
+        margin: 0 10px;
+        border: 1px solid black;
+        border-radius: 5px;
+
+        .menubar__chooseoption {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            span {
+                margin-left: 5px;
+            }
+
+            img {
+                height: 100%;
+            }
         }
 
-        .menubar__contextmenu {
+        .menubar__chooselist {
             position: absolute;
+            // box-shadow: 0 0 5px $shodowColor;
+            z-index: 100;
             top: 100%;
-            left: 0;
+            left: -.5px;
+            width: 100%;
             background-color: white;
-            box-shadow: 0 0 5px $shodowColor;
-            white-space: nowrap;
-            min-width: 150px;
-            border-radius: 0 5px 5px 5px;
-            overflow: hidden;
-            z-index: 10;
-            
-            .menubar__contextmenuitem {
-                padding: 5px 10px;
+            border: 1px solid black;
+            // overflow: auto;
 
+            .menubar__chooselistitem {
                 &:hover {
                     background-color: $hoverColor;
                 }
             }
         }
+    }
+
+    .menubar__choose_open {
+        border-radius: 5px 5px 0 0;
     }
 
 }
@@ -138,28 +190,6 @@ $shodowColor: rgba($color: #000000, $alpha: .2);
             input {
                 height: 18px;
                 width: 18px;
-            }
-        }
-
-        .toolbar__sectionchoose {
-            position: relative;
-            align-self: center;
-            width: 100px;
-            height: 25px;
-            margin: 0 10px;
-            border: 1px solid black;
-            border-radius: 5px;
-
-            .toolbar__sectionchooselist {
-                position: absolute;
-                // box-shadow: 0 0 5px $shodowColor;
-                z-index: 100;
-                top: 0;
-                height: 100%;
-                transform: translateY(-100%);
-                background-color: white;
-                border: 1px solid black;
-                // overflow: auto;
             }
         }
     }

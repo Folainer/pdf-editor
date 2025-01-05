@@ -3,7 +3,6 @@ import ToolbarSection from "./ToolbarSection"
 import ToolbarSectionImage from './ToolbarSectionImage'
 import ToolbarSectionInput from "./ToolbarSectionInput"
 import ToolbarSectionCheck from "./ToolbarSectionCheck"
-import ToolbarSectionChoose from "./ToolbarSectionChoose"
 
 const Toolbar = () => {
     const emptyHandler = () => {
@@ -181,17 +180,6 @@ const Toolbar = () => {
                 },
             ]
         },
-        {
-            name: 'Template',
-            items: [
-                {
-                    type: 'choose',
-                    title: 'ChooseTemplate',
-                    handler: emptyHandler,
-                    useCheck: emptyCheck
-                }
-            ]
-        }
     ]
 
     const sectionLenth = sectionData.length
@@ -211,8 +199,6 @@ const Toolbar = () => {
                                     return <ToolbarSectionInput title={item.title} handler={isEnabled ? item.handler : null} isEnabled={isEnabled} />
                                 } else if (item.type === 'check') {
                                     return <ToolbarSectionCheck title={item.title} handler={isEnabled ? item.handler : null} isEnabled={isEnabled} /> 
-                                } else if (item.type === 'choose') {
-                                    return <ToolbarSectionChoose title={item.title} />
                                 }
                             })}
                         </ToolbarSection>

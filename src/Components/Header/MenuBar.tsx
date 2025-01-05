@@ -1,12 +1,12 @@
 import { useState } from "react"
 import './Header.scss'
+import MenuBarChoose from "./MenubarChoose"
 // import { ChangeBackgroundCommand } from "../../Logic/Command/ChangeBackgroundCommand"
 import { useCommandManager } from "../CommandManagerProvider"
 
 const MenuBar = () => {
     const [activeMenu, setActiveMenu] = useState<string | null>(null)
 
-    // const menuList = ['Pdf', 'Edit', 'Add', 'Template', 'Data', 'Font']
 
     const commandManager = useCommandManager()
 
@@ -124,34 +124,36 @@ const MenuBar = () => {
     //     commandManager.execute(command)
     // }
 
-
     return (
         <div className="menubar">
-            {menuList.map(menuListItem => {
-                return (
-                    <div 
-                        className="menubar__item"
-                        key={menuListItem.name}
-                        onMouseEnter={() => mouseEnter(menuListItem.name)}
-                        onMouseLeave={mouseLeave}
-                    >
-                        {menuListItem.name}
-                        {activeMenu === menuListItem.name && (
-                            <div className="menubar__contextmenu">
-                                {menuListItem.options.map(option => {
-                                    return (
-                                    <div
-                                        key={option.name}
-                                        className="menubar__contextmenuitem"
-                                        onClick={option.handling}>
-                                        {option.name}
-                                    </div>)
-                                })}
-                            </div>
-                        )}
-                    </div>
-                )
-            })}
+            <div className="menubar__items">
+                {menuList.map(menuListItem => {
+                    return (
+                        <div 
+                            className="menubar__item"
+                            key={menuListItem.name}
+                            onMouseEnter={() => mouseEnter(menuListItem.name)}
+                            onMouseLeave={mouseLeave}
+                        >
+                            {menuListItem.name}
+                            {activeMenu === menuListItem.name && (
+                                <div className="menubar__contextmenu">
+                                    {menuListItem.options.map(option => {
+                                        return (
+                                        <div
+                                            key={option.name}
+                                            className="menubar__contextmenuitem"
+                                            onClick={option.handling}>
+                                            {option.name}
+                                        </div>)
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    )
+                })}
+            </div>
+            <MenuBarChoose title="Choose template"/>
         </div>
     )
 }
