@@ -9,9 +9,30 @@ const Toolbar = () => {
         alert('The command still is not availabe')
     }
 
-    const emptyCheck = (state : AppState) => {
-        state
-        return true
+    // const emptyCheck = (state : AppState) => {
+    //     state
+    //     return true
+    // }
+
+    const saveTemplateCheck = (state: AppState) => {
+        if (state.hasUnsavedTemplate) {
+            return true
+        }
+        return false
+    }
+    
+    const saveDataCheck = (state: AppState) => {
+        if (state.hasUnsavedData) {
+            return true
+        }
+        return false
+    }
+
+    const saveCheck = (state: AppState) => {
+        if (state.hasUnsavedData || state.hasUnsavedTemplate) {
+            return true
+        }
+        return false
     }
 
     const alignmentCheck = (state : AppState) => {
@@ -50,21 +71,21 @@ const Toolbar = () => {
                     src: '/img/save.png',
                     title: 'Save All',
                     handler: emptyHandler,
-                    useCheck: emptyCheck
+                    useCheck: saveCheck
                 },
                 {
                     type: 'image',
                     src: '/img/templateSave.png',
                     title: 'Save template',
                     handler: emptyHandler,
-                    useCheck: emptyCheck
+                    useCheck: saveTemplateCheck
                 },
                 {
                     type: 'image',
                     src: '/img/dataSave.png',
                     title: 'Save data',
                     handler: emptyHandler,
-                    useCheck: emptyCheck
+                    useCheck: saveDataCheck
                 },
             ]
         },

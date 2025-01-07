@@ -66,6 +66,10 @@ const MenuBar = () => {
                     handling: () => alert('Command is not available')
                 },
                 {
+                    name: 'Create empty template',
+                    handling: () => alert('Command is not available')
+                },
+                {
                     name: 'Export current template',
                     handling: () => alert('Command is not available')
                 },
@@ -94,6 +98,19 @@ const MenuBar = () => {
                     name: 'Export data',
                     handling: () => alert('Command is not available')
                 }
+            ]
+        },
+        {
+            name: 'Image',
+            options: [
+                {
+                    name: 'Import image',
+                    handling: () => alert('Command is not available')
+                },
+                {
+                    name: 'Delete all images',
+                    handling: () => alert('Command is not available')
+                },
             ]
         },
         {
@@ -138,9 +155,10 @@ const MenuBar = () => {
                             {menuListItem.name}
                             {activeMenu === menuListItem.name && (
                                 <div className="menubar__contextmenu">
-                                    {menuListItem.options.map(option => {
+                                    {menuListItem.options.map((option, index) => {
                                         return (
                                         <div
+                                            tabIndex={index + 1}
                                             key={option.name}
                                             className="menubar__contextmenuitem"
                                             onClick={option.handling}>

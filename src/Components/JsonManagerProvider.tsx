@@ -9,8 +9,8 @@ interface JsonContext {
 const JsonManagerContext = createContext<JsonContext | null>(null)
 
 export const JsonManagerProvider : React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const jsonTemplateManager = new JsonManager({ name: 'hello'})
-    const jsonDataManager = new JsonManager({ name: 'bye' })
+    const jsonTemplateManager = new JsonManager()
+    const jsonDataManager = new JsonManager()
 
     return (
         <JsonManagerContext.Provider value={{ template : jsonTemplateManager, data : jsonDataManager }}>

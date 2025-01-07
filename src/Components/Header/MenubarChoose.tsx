@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useJsonManager } from "../JsonManagerProvider"
 
 const MenuBarChoose : React.FC<{title: string, }> = ({title}) => {
     const [isOpen, setOpenness] = useState<boolean>(false)
@@ -12,6 +13,8 @@ const MenuBarChoose : React.FC<{title: string, }> = ({title}) => {
         setOption(itemName)
     }
 
+    const templateJson = useJsonManager().template
+
     return (
         <div title={title} onClick={() => handleClick()} className={`menubar__choose ${isOpen && 'menubar__choose_open'}`}>
             <div className="menubar__chooseoption"> 
@@ -20,10 +23,10 @@ const MenuBarChoose : React.FC<{title: string, }> = ({title}) => {
             </div>
             {isOpen && (
                 <div className="menubar__chooselist">
-                    {['One', 'Two', 'Three', 'Four', 'Five', 'Six'].map(item => {
+                    {templateJson.getAll().map(item => {
                         return (
-                            <div key={item} onClick={() => handleItemClick(item)}  className="menubar__chooselistitem">
-                                {item}
+                            <div key={item.name} onClick={() => handleItemClick(item.name)}  className="menubar__chooselistitem">
+                                {item.name}
                             </div>
                         )
                     })}

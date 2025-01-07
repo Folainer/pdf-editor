@@ -7,8 +7,8 @@ const AppDisplay = () => {
     return (
         <>
             <Header />
-            {JSON.stringify(jsonTempleManager.getJson())}
-            {JSON.stringify(jsonDataManager.getJson())}
+            {JSON.stringify(jsonTempleManager.getUnsaved())}
+            {JSON.stringify(jsonDataManager.getUnsaved())}
         </>
     )
 }
