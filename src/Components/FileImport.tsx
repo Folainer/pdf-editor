@@ -31,6 +31,7 @@ const FileImport : React.FC<FileImportProps> = ({onFileSelect, accept = '*', chi
                 accept={accept}
                 ref={fileInputRef}
                 onChange={handleFileChange}
+                className="menubar__fileimport"
             />
             <div onClick={handleClick}>
                 {children}

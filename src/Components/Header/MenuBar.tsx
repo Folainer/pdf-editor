@@ -2,6 +2,7 @@ import { useState } from "react"
 import './Header.scss'
 import MenuBarChoose from "./MenubarChoose"
 // import { ChangeBackgroundCommand } from "../../Logic/Command/ChangeBackgroundCommand"
+import FileImport from "../FileImport"
 import { useCommandManager } from "../CommandManagerProvider"
 
 const MenuBar = () => {
@@ -63,7 +64,9 @@ const MenuBar = () => {
             options: [
                 {
                     name: 'Import template',
-                    handling: () => alert('Command is not available')
+                    handling: () => {},
+                    fileImport: (file : File) => console.log(file),
+                    accept: '.json'
                 },
                 {
                     name: 'Create empty template',
@@ -156,14 +159,23 @@ const MenuBar = () => {
                             {activeMenu === menuListItem.name && (
                                 <div className="menubar__contextmenu">
                                     {menuListItem.options.map((option, index) => {
-                                        return (
+                                        return (!option.fileImport ?
                                         <div
                                             tabIndex={index + 1}
                                             key={option.name}
                                             className="menubar__contextmenuitem"
                                             onClick={option.handling}>
                                             {option.name}
-                                        </div>)
+                                        </div> :
+                                        <FileImport onFileSelect={option.fileImport} accept={option.accept} >
+                                            <div
+                                                tabIndex={index + 1}
+                                                key={option.name}
+                                                className="menubar__contextmenuitem"
+                                                onClick={option.handling}>
+                                                {option.name}
+                                            </div>
+                                        </FileImport>)
                                     })}
                                 </div>
                             )}

@@ -3,10 +3,11 @@ import React, { createContext, useContext, useState } from "react"
 export interface AppState {
     selectedElement: null | 'text' | 'table' | 'image',
     hasUnsavedTemplate: boolean,
-    hasUnsavedData : boolean
+    hasUnsavedData : boolean,
+    selectedTemplate: string | null
 }
 
-interface AppStateContextType {
+export interface AppStateContextType {
     state: AppState,
     setState: React.Dispatch<React.SetStateAction<AppState>>
 }
@@ -17,7 +18,8 @@ export const AppStateProvider : React.FC<{children : React.ReactNode}> = ({child
     const [state, setState] = useState<AppState>({
         selectedElement: null,
         hasUnsavedTemplate: false,
-        hasUnsavedData: false
+        hasUnsavedData: false,
+        selectedTemplate: null
     })
 
     return (

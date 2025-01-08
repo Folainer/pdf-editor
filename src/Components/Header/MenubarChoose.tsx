@@ -1,16 +1,23 @@
 import React, { useState } from "react"
 import { useJsonManager } from "../JsonManagerProvider"
+import { ChangeTemplateCommand } from "../../Logic/Command/ChangeTemplateCommand"
+import { useAppState } from "../AppStateProvider"
+import { useCommandManager } from "../CommandManagerProvider"
 
 const MenuBarChoose : React.FC<{title: string, }> = ({title}) => {
     const [isOpen, setOpenness] = useState<boolean>(false)
     const [option, setOption] = useState<string>('')
+    const appState = useAppState()
+    const commandManager = useCommandManager()
 
     const handleClick = () => {
         setOpenness(!isOpen)
     }
 
     const handleItemClick = (itemName: string) => {
-        setOption(itemName)
+        const command = new ChangeTemplateCommand(appState, setOption, itemName)
+        commandManager.execute(command)
+        // setOption(itemName)
     }
 
     const templateJson = useJsonManager().template

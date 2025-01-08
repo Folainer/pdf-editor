@@ -58,7 +58,7 @@ const Toolbar = () => {
         if (state.selectedElement) {
             return true
         }
-        return false
+        return true
     }
 
 
