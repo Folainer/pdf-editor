@@ -3,7 +3,13 @@ export interface Command {
     undo(): void;
 }
 
-export default class CommandManager {
+export interface CommandManagerType {
+    execute: (command: Command) => void,
+    undo: () => void,
+    redo: () => void
+}
+
+export default class CommandManager implements CommandManagerType {
     private history: Command[] = []
     private undoStack: Command[] = []
 

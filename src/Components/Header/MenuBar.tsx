@@ -4,12 +4,37 @@ import MenuBarChoose from "./MenubarChoose"
 // import { ChangeBackgroundCommand } from "../../Logic/Command/ChangeBackgroundCommand"
 import FileImport from "../FileImport"
 import { useCommandManager } from "../CommandManagerProvider"
+// import { ChangeTemplateCommand } from "../../Logic/Command/ChangeTemplateCommand"
+import { ImportTemplateCommand } from "../../Logic/Command/ImportTemplateCommand"
+import { useJsonManager } from "../JsonManagerProvider"
+import { useAppState } from "../AppStateProvider"
 
 const MenuBar = () => {
     const [activeMenu, setActiveMenu] = useState<string | null>(null)
 
-
     const commandManager = useCommandManager()
+
+    const jsonManager = useJsonManager()
+
+    const appState = useAppState()
+
+    const { template : templateJsonManager} = jsonManager
+
+    const fileImport = (file: File) => {
+        const reader = new FileReader()
+
+        reader.readAsText(file)
+
+        reader.onload = () => {
+            console.log(reader.result)
+            //fix it next time on 10.10
+            // const command = new ImportTemplateCommand(templateJsonManager, appState, )
+        }
+
+        reader.onerror = () => {
+            console.log('The file import error')
+        }
+    }
 
     const menuList = [
         {
@@ -65,7 +90,7 @@ const MenuBar = () => {
                 {
                     name: 'Import template',
                     handling: () => {},
-                    fileImport: (file : File) => console.log(file),
+                    fileImport: fileImport,
                     accept: '.json'
                 },
                 {
@@ -157,7 +182,7 @@ const MenuBar = () => {
                         >
                             {menuListItem.name}
                             {activeMenu === menuListItem.name && (
-                                <div className="menubar__contextmenu">
+                                <div key={menuListItem.name} className="menubar__contextmenu">
                                     {menuListItem.options.map((option, index) => {
                                         return (!option.fileImport ?
                                         <div

@@ -1,10 +1,18 @@
-interface JsonType {
+export interface JsonType {
     type?: 'saved' | 'unsaved'
     name: string,
     json: Record<string, any>
 }
 
-export default class JsonManager {
+export interface JsonManagerType {
+    replaceJson: (jsontype: JsonType) => void,
+    replaceByName: (name: string, jsontype : JsonType) => void,
+    getUnsaved: () => JsonType | null,
+    getByName: (name: string) => JsonType | null,
+    getAll: () => JsonType[]
+}
+
+export default class JsonManager implements JsonManagerType {
     private jsonData: JsonType[]
 
     constructor() {
@@ -17,7 +25,7 @@ export default class JsonManager {
         console.log('Loading server\'s json files')
         this.jsonData.push({
             name: 'test',
-            type: 'unsaved',
+            type: 'saved',
             json: {name: 'hello'}
         })
     }

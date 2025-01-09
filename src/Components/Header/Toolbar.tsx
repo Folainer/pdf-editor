@@ -64,6 +64,7 @@ const Toolbar = () => {
 
     const sectionData  = [
         {
+            id: 0,
             name: 'Save',
             items: [
                 {
@@ -90,6 +91,7 @@ const Toolbar = () => {
             ]
         },
         {
+            id: 1,
             name: 'Alignment',
             items: [
                 {
@@ -137,6 +139,7 @@ const Toolbar = () => {
             ]
         },
         {
+            id: 2,
             name: 'Size',
             items: [
                 {
@@ -154,6 +157,7 @@ const Toolbar = () => {
             ]
         },
         {
+            id: 3,
             name:'Positioning',
             items: [
                 {
@@ -177,6 +181,7 @@ const Toolbar = () => {
             ]
         },
         {
+            id: 4,
             name: 'Grid',
             items: [
                 {
@@ -211,7 +216,7 @@ const Toolbar = () => {
             {sectionData.map((section, index) => {
                 return (
                     <>
-                        <ToolbarSection name={section.name}>
+                        <ToolbarSection  name={section.name}>
                             {section.items.map(item => {
                                 const isEnabled = item.useCheck(appState)
                                 if (item.type === 'image' && 'src' in item) {

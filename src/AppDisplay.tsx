@@ -1,14 +1,20 @@
 import { useJsonManager } from "./Components/JsonManagerProvider"
+import { useAppState } from "./Components/AppStateProvider"
 import Header from "./Components/Header/Header"
 
 const AppDisplay = () => {
-    const {template : jsonTempleManager, data : jsonDataManager} = useJsonManager()
+    const {template : jsonTemplateManager} = useJsonManager()
+    const appState = useAppState().state
+    const selectedTemplate = appState.selectedTemplate
+    let selectedTemplateJson
+    if (selectedTemplate) {
+        selectedTemplateJson = jsonTemplateManager.getByName(selectedTemplate)
+    }
 
     return (
         <>
             <Header />
-            {JSON.stringify(jsonTempleManager.getUnsaved())}
-            {JSON.stringify(jsonDataManager.getUnsaved())}
+            {selectedTemplateJson && JSON.stringify(selectedTemplateJson)}
         </>
     )
 }
