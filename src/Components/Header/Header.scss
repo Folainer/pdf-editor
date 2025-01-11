@@ -49,11 +49,12 @@ $shodowColor: rgba($color: #000000, $alpha: .2);
 
     .menubar__choose {
         position: relative;
-        width: 150px;
+        width: 220px;
         height: 25px;
         margin: 0 10px;
         border: 1px solid black;
         border-radius: 5px;
+        white-space: nowrap;
 
         .menubar__chooseoption {
             height: 100%;

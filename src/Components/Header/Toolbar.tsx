@@ -50,8 +50,10 @@ const Toolbar = () => {
     }
 
     const gridCheck = (state : AppState) => {
-        state
-        return true
+        if (state.selectedTemplate) {
+            return true
+        }
+        return false
     }
 
     const sizeCheck = (state : AppState) => {

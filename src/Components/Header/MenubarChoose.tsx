@@ -3,12 +3,16 @@ import { useJsonManager } from "../JsonManagerProvider"
 import { ChangeTemplateCommand } from "../../Logic/Command/ChangeTemplateCommand"
 import { useAppState } from "../AppStateProvider"
 import { useCommandManager } from "../CommandManagerProvider"
+import { useComponentContext } from "../ComponentContextProvider"
 
 const MenuBarChoose : React.FC<{title: string, }> = ({title}) => {
     const [isOpen, setOpenness] = useState<boolean>(false)
     const [option, setOption] = useState<string>('')
     const appState = useAppState()
     const commandManager = useCommandManager()
+
+    const componentContext = useComponentContext()
+    componentContext.chooseContext.setOption = setOption
 
     const handleClick = () => {
         setOpenness(!isOpen)
@@ -17,7 +21,6 @@ const MenuBarChoose : React.FC<{title: string, }> = ({title}) => {
     const handleItemClick = (itemName: string) => {
         const command = new ChangeTemplateCommand(appState, setOption, itemName)
         commandManager.execute(command)
-        // setOption(itemName)
     }
 
     const templateJson = useJsonManager().template

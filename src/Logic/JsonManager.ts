@@ -7,6 +7,7 @@ export interface JsonType {
 export interface JsonManagerType {
     replaceJson: (jsontype: JsonType) => void,
     replaceByName: (name: string, jsontype : JsonType) => void,
+    delete: (name: string) => void,
     getUnsaved: () => JsonType | null,
     getByName: (name: string) => JsonType | null,
     getAll: () => JsonType[]
@@ -78,6 +79,14 @@ export default class JsonManager implements JsonManagerType {
         if (!isFound) {
             this.jsonData.push(jsontype)
         }
+    }
+
+    delete(name: string) {
+        this.jsonData = this.jsonData.filter((json) => {
+            if (json.name !== name) {
+                return json
+            }
+        })
     }
 
     getUnsaved() {

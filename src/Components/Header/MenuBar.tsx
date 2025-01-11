@@ -8,6 +8,8 @@ import { useCommandManager } from "../CommandManagerProvider"
 import { ImportTemplateCommand } from "../../Logic/Command/ImportTemplateCommand"
 import { useJsonManager } from "../JsonManagerProvider"
 import { useAppState } from "../AppStateProvider"
+import { useComponentContext } from "../ComponentContextProvider"
+import DownloadManager from "../../Logic/DownloadManager"
 
 const MenuBar = () => {
     const [activeMenu, setActiveMenu] = useState<string | null>(null)
@@ -20,21 +22,36 @@ const MenuBar = () => {
 
     const { template : templateJsonManager} = jsonManager
 
-    const fileImport = (file: File) => {
+    const componentContext = useComponentContext()
+
+    const fileTemplateImport = (file: File) => {
         const reader = new FileReader()
 
         reader.readAsText(file)
 
         reader.onload = () => {
-            console.log(reader.result)
-            //fix it next time on 10.10
-            // const command = new ImportTemplateCommand(templateJsonManager, appState, )
+            try {
+                const setOption = componentContext.chooseContext.setOption
+                if (setOption) {
+                    if (typeof reader.result === 'string') {
+                        JSON.parse(reader.result)
+                        const command = new ImportTemplateCommand(templateJsonManager, appState, setOption, reader.result)
+                        commandManager.execute(command)
+                    } else {
+                        console.error('File content is not a string');
+                    }
+                }
+            } catch (error) {
+                alert('The error during import')
+            }
         }
 
         reader.onerror = () => {
             console.log('The file import error')
         }
     }
+
+    // const fileTemplateExport = ()
 
     const menuList = [
         {
@@ -90,7 +107,7 @@ const MenuBar = () => {
                 {
                     name: 'Import template',
                     handling: () => {},
-                    fileImport: fileImport,
+                    fileImport: fileTemplateImport,
                     accept: '.json'
                 },
                 {
@@ -99,7 +116,17 @@ const MenuBar = () => {
                 },
                 {
                     name: 'Export current template',
-                    handling: () => alert('Command is not available')
+                    handling: () => {
+                        const selectedTemplate = appState.state.selectedTemplate;
+                        if (selectedTemplate) {
+                            const templateJson = templateJsonManager.getByName(selectedTemplate)
+                            if (templateJson) {
+                                DownloadManager.exportObject(JSON.stringify(templateJson.json, null, 2), `${templateJson.name}.json`)   
+                            }
+                        } else {
+                            alert('Template was not choosen')
+                        }
+                    }
                 },
                 {
                     name: 'Save current template',
