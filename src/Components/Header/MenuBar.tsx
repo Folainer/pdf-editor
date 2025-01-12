@@ -51,8 +51,6 @@ const MenuBar = () => {
         }
     }
 
-    // const fileTemplateExport = ()
-
     const menuList = [
         {
             name: 'Pdf',
