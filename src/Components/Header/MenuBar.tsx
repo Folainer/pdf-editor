@@ -1,15 +1,14 @@
-import { useState } from "react"
 import './Header.scss'
+import { useState } from "react"
 import MenuBarChoose from "./MenubarChoose"
-// import { ChangeBackgroundCommand } from "../../Logic/Command/ChangeBackgroundCommand"
 import FileImport from "../FileImport"
-import { useCommandManager } from "../CommandManagerProvider"
-// import { ChangeTemplateCommand } from "../../Logic/Command/ChangeTemplateCommand"
+import DownloadManager from "../../Logic/DownloadManager"
 import { ImportTemplateCommand } from "../../Logic/Command/ImportTemplateCommand"
+import { useCommandManager } from "../CommandManagerProvider"
 import { useJsonManager } from "../JsonManagerProvider"
 import { useAppState } from "../AppStateProvider"
 import { useComponentContext } from "../ComponentContextProvider"
-import DownloadManager from "../../Logic/DownloadManager"
+import { validateTemplateJson } from '../../Logic/Validator'
 
 const MenuBar = () => {
     const [activeMenu, setActiveMenu] = useState<string | null>(null)
@@ -34,15 +33,20 @@ const MenuBar = () => {
                 const setOption = componentContext.chooseContext.setOption
                 if (setOption) {
                     if (typeof reader.result === 'string') {
-                        JSON.parse(reader.result)
-                        const command = new ImportTemplateCommand(templateJsonManager, appState, setOption, reader.result)
-                        commandManager.execute(command)
+                        const pdfFormat = validateTemplateJson(reader.result)
+                        console.log(pdfFormat)
+                        if (pdfFormat) {
+                            const command = new ImportTemplateCommand(templateJsonManager, appState, setOption, pdfFormat)
+                            commandManager.execute(command)
+                        } else {
+                            throw new Error()
+                        }
                     } else {
-                        console.error('File content is not a string');
+                        throw new Error()
                     }
                 }
             } catch (error) {
-                alert('The error during import')
+                alert('The import error')
             }
         }
 
@@ -140,7 +144,7 @@ const MenuBar = () => {
             name: 'Data',
             options: [
                 {
-                    name: 'Replace data',
+                    name: 'Import/Replace data',
                     handling: () => alert('Command is not available')
                 },
                 {

@@ -4,6 +4,7 @@ import { AppStateContextType } from "../../Components/AppStateProvider"
 import { JsonType } from "../JsonManager"
 import { ChangeTemplateCommand } from "./ChangeTemplateCommand"
 import { JsonManagerType } from "../JsonManager"
+import { PdfFormat } from "../../Components/Types/PdfTypes"
 
 
 export class ImportTemplateCommand implements Command {
@@ -11,15 +12,14 @@ export class ImportTemplateCommand implements Command {
     private changeTemplateCommand : Command
     // private oldJson : JsonType | null
 
-    constructor(private jsonTemplateManager: JsonManagerType, private appState: AppStateContextType, setOption : React.Dispatch<React.SetStateAction<string>>, jsonText: string) {
-        const jsonParsed = JSON.parse(jsonText)
+    constructor(private jsonTemplateManager: JsonManagerType, private appState: AppStateContextType, setOption : React.Dispatch<React.SetStateAction<string>>, pdfFormat: PdfFormat) {
         let jsonName = 'unnamed'
-        if ('name' in jsonParsed) {
-            jsonName = jsonParsed.name
+        if ('name' in pdfFormat) {
+            jsonName = pdfFormat.name
         }
 
         this.json = {
-            json: jsonParsed,
+            json: pdfFormat,
             name: jsonName,
             type: 'unsaved'
         }

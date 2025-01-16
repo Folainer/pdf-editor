@@ -1,6 +1,9 @@
+import './App.scss'
 import { useJsonManager } from "./Components/JsonManagerProvider"
 import { useAppState } from "./Components/AppStateProvider"
 import Header from "./Components/Header/Header"
+import PdfView from './Components/PdfView/PdfView'
+import ProperyMenu from './Components/ProperyMenu/PropertyMenu'
 
 const AppDisplay = () => {
     const {template : jsonTemplateManager} = useJsonManager()
@@ -12,10 +15,12 @@ const AppDisplay = () => {
     }
 
     return (
-        <>
+        <div className="appdisplay">
             <Header />
-            {selectedTemplateJson && JSON.stringify(selectedTemplateJson)}
-        </>
+            <PdfView />
+            <ProperyMenu />
+            {/* {selectedTemplateJson && JSON.stringify(selectedTemplateJson)} */}
+        </div>
     )
 }
 
