@@ -1,3 +1,25 @@
+export interface TableProps {
+    name: string, 
+    type: string,
+    seq: string,
+    txt: string,
+    w: string,
+    min_h: string,
+    padding_top: string,
+    padding_right: string,
+    padding_bottom: string,
+    padding_left: string,
+    align: string,
+    font_size: string,
+    font_family: string,
+    fontcolor: string,
+    fillcolor: string,
+    fitcell_type: string,
+    row: string,
+    rowspan: string,
+    colspan: string
+}
+
 export interface SimpleElement {
     name: string;
     type: string;
@@ -27,6 +49,10 @@ export interface SimpleElement {
     border_left: string;
 }
 
+export interface TableElement extends SimpleElement {
+    elements: TableProps[]
+}
+
 export interface Format {
     w: string;
     h: string;
@@ -34,12 +60,12 @@ export interface Format {
     padding_left: string;
     padding_right: string;
     padding_bottom: string;
-    elements: SimpleElement[];
+    elements: SimpleElement[] | TableElement[];
 }
 
 export interface PdfFormat {
     name: string;
-    type: string;
+    type: 'pdf';
     rotation: string;
     is_multiple: string;
     cols: string;

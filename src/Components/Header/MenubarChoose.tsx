@@ -15,6 +15,9 @@ const MenuBarChoose : React.FC<{title: string, }> = ({title}) => {
     componentContext.chooseContext.setOption = setOption
 
     const handleClick = () => {
+        if (templateJson.getAll().length === 0) {
+            return
+        }
         setOpenness(!isOpen)
     }
 

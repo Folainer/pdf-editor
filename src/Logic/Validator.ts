@@ -1,4 +1,5 @@
 import { PdfFormat } from "../Components/Types/PdfTypes"
+import { TableElement } from "../Components/Types/PdfTypes"
 
 export const validateTemplateJson = (jsonString: string) => {
     try {
@@ -38,7 +39,7 @@ export const validateTemplateJson = (jsonString: string) => {
             format.elements.forEach(element => {
                 if (!(typeof element.type === 'string')) throw new Error()
 
-                if (element.type === 'multibox') {
+                if (element.type === 'multibox' || element.type === 'image' || element.type === 'table') {
                     const hasElementProps = (
                         typeof element.name === 'string' &&
                         typeof element.seq === 'string' &&
@@ -67,6 +68,38 @@ export const validateTemplateJson = (jsonString: string) => {
                         typeof element.border_right === 'string'
                     )
                     if (!hasElementProps) throw new Error()
+
+                    if (element.type === 'table') {
+                        const tableElement = element as TableElement
+                        if (Array.isArray(tableElement.elements)) {
+                            tableElement.elements.forEach(subElement => {
+                                const hasTableElementProps = (
+                                    typeof subElement.name === 'string' &&
+                                    typeof subElement.seq === 'string' &&
+                                    typeof subElement.txt === 'string' &&
+                                    typeof subElement.w === 'string' &&
+                                    typeof subElement.min_h === 'string' &&
+                                    typeof subElement.padding_top === 'string' &&
+                                    typeof subElement.padding_right === 'string' &&
+                                    typeof subElement.padding_bottom === 'string' &&
+                                    typeof subElement.padding_left === 'string' &&
+                                    typeof subElement.align === 'string' &&
+                                    typeof subElement.font_size === 'string' &&
+                                    typeof subElement.font_family === 'string' &&
+                                    typeof subElement.fontcolor === 'string' &&
+                                    typeof subElement.fillcolor === 'string' &&
+                                    typeof subElement.fitcell_type === 'string' &&
+                                    typeof subElement.row === 'string' &&
+                                    typeof subElement.rowspan === 'string' &&
+                                    typeof subElement.colspan === 'string'
+                                )
+
+                                if (!hasTableElementProps) throw new Error()
+                            })
+                        } else {
+                            throw new Error()
+                        }
+                    }
                 } else {
                     throw new Error()
                 }

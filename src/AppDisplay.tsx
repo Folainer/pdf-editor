@@ -17,8 +17,12 @@ const AppDisplay = () => {
     return (
         <div className="appdisplay">
             <Header />
-            <PdfView />
-            <ProperyMenu />
+            {selectedTemplate && (
+                <>
+                    <PdfView />
+                    <ProperyMenu />
+                </>
+            )}
             {/* {selectedTemplateJson && JSON.stringify(selectedTemplateJson)} */}
         </div>
     )

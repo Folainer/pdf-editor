@@ -4,7 +4,8 @@ export interface AppState {
     selectedElement: null | 'text' | 'table' | 'image',
     hasUnsavedTemplate: boolean,
     hasUnsavedData : boolean,
-    selectedTemplate: string | null
+    selectedTemplate: string | null,
+    zoom: number
 }
 
 export interface AppStateContextType {
@@ -19,7 +20,8 @@ export const AppStateProvider : React.FC<{children : React.ReactNode}> = ({child
         selectedElement: null,
         hasUnsavedTemplate: false,
         hasUnsavedData: false,
-        selectedTemplate: null
+        selectedTemplate: null,
+        zoom: 1
     })
 
     return (

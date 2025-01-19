@@ -24,11 +24,6 @@ export default class JsonManager implements JsonManagerType {
     //needed to be updated
     load() {
         console.log('Loading server\'s json files')
-        this.jsonData.push({
-            name: 'test',
-            type: 'saved',
-            json: {name: 'hello'}
-        })
     }
 
     //neded to be updated

@@ -1,14 +1,15 @@
-// $color: aliceblue;
+$color: rgb(242, 246, 251);
 
-// body {
-//     background-color: $color;
-// }
+body {
+    background-color: $color;
+}
 
 .appdisplay {
     width: 100vw;
     height: 100vh;
     display: grid;
-    grid-template-columns: 1fr 300px;
+    grid-auto-rows: 0;
+    grid-template-columns: 1fr 350px;
     grid-template-rows: auto 1fr;
     grid-template-areas: 
         'header header'
