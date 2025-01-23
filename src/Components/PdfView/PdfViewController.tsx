@@ -21,7 +21,9 @@ const PdfViewController  = ({zoom, onIncrementZoom, onDecrementZoom} : PdfViewCo
     return (
         <div className="pdfview__controller">
             <div className="pdfview__controllerpage">
+                <div className="pdfview__controllerpageleft"></div>
                 / {selectedTemplateJson?.formats.length}
+                <div className="pdfview__controllerpageright"></div>
             </div>
             <div className="pdfview__controllerscale">
                 <div className="pdfview__controllerscaleminus" onClick={() => onDecrementZoom()}>-</div>
