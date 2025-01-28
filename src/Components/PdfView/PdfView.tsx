@@ -6,6 +6,7 @@ import { useJsonManager } from '../JsonManagerProvider'
 // import { JsonType } from '../../Logic/JsonManager'
 import { PdfFormat } from '../Types/PdfTypes'
 import { useEffect, useRef, useState } from 'react'
+import Multibox from './Multibox'
 
 const PdfView = () => {
     const {template : jsonTemplateManager} = useJsonManager()
@@ -35,24 +36,48 @@ const PdfView = () => {
         }))
     }
 
+    const scrollToPage = (pageIndex: number) => {
+        if (!containerRef.current) return
+
+        const pages = containerRef.current.querySelectorAll('.pdfview__page')
+        const targetPage = pages[pageIndex]
+
+        if (targetPage) {
+            const offsetTop = targetPage.getBoundingClientRect().top + containerRef.current.scrollTop - 100
+            containerRef.current.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
+            })
+            // setCurrentPage(pageIndex)
+        }
+    }
+
     useEffect(() => {
         const handleScroll = () => {
-            if (!containerRef.current) return
+            if (!containerRef.current || !containerRef) return;
 
-            const pages = containerRef.current.querySelectorAll('.pdfview__page')
+            const pages = containerRef.current.querySelectorAll('.pdfview__page');
 
-            let currentPageIndex = 0
+            let currentPageIndex = 0; // Default to the first page
 
+            // Find the page that is most visible
             pages.forEach((page, index) => {
-                const rect = page.getBoundingClientRect()
+                const rect = page.getBoundingClientRect();
+                const containerRect = containerRef.current?.getBoundingClientRect();
 
-                if (rect.top >= 0 && rect.top <= window.innerHeight / 2) {
-                    currentPageIndex = index
+                // Calculate the visible height of the page inside the container
+                const visibleTop = containerRect ? Math.max(rect.top, containerRect.top) : 0;
+                const visibleBottom = containerRect ? Math.min(rect.bottom, containerRect.bottom) : 0;
+
+                const visibleHeight = Math.max(0, visibleBottom - visibleTop + 15);
+
+                // If the visible height of this page is greater than 50% of the container height, mark it as the current page
+                if (containerRef.current && visibleHeight > containerRef.current.clientHeight / 2) {
+                    currentPageIndex = index;
                 }
-            })
+            });
 
-            setCurrentPage(currentPageIndex)
-            console.log(currentPage)
+            setCurrentPage(currentPageIndex); // Update the current page state
         }
 
         const container = containerRef.current;
@@ -62,6 +87,7 @@ const PdfView = () => {
         container?.removeEventListener("scroll", handleScroll);
         };
     }, [])
+
 
     return (
         <div className="pdfview">
@@ -78,15 +104,51 @@ const PdfView = () => {
                     style={{
                         width: `${format.w}px`,
                         height: `${format.h}px`,
-                        transform: `scale(${2*zoom})`,
-                        marginBottom: `${2 * (2*zoom - 1) * parseInt(format.h) - 290 * (2*zoom - 1)}px`,
+                        transform: `scale(${zoom})`,
+                        marginBottom: `${1.4 * (zoom - 1) * parseInt(format.h) - 320 * (zoom - 1)}px`,
                         // border: `${1}px solid gray`
                     }}>
-                    a
+                        <div 
+                            className='pdfview__pagepaddings'
+                            style={{
+                                height: '100%',
+                                width: `${format.padding_left}px`,
+                                left: 0,
+                                top: 0}}>
+                        </div>
+                        <div 
+                            className='pdfview__pagepaddings'
+                            style={{
+                                height: '100%',
+                                width: `${format.padding_right}px`,
+                                right: 0,
+                                top: 0}}>
+                        </div>
+                        <div 
+                            className='pdfview__pagepaddings'
+                            style={{
+                                width: '100%',
+                                height: `${format.padding_top}px`,
+                                left: 0,
+                                top: 0}}>
+                        </div>
+                        <div 
+                            className='pdfview__pagepaddings'
+                            style={{
+                                width: '100%',
+                                height: `${format.padding_bottom}px`,
+                                left: 0,
+                                bottom: 0}}>
+                        </div>
+                        {format.elements.map(element => {
+                            if (element.type === 'multibox') {
+                                return <Multibox element={element} />
+                            }
+                        })}
                 </div>
                 ))}
             </div>
-            <PdfViewController zoom={zoom} onIncrementZoom={incrementZoom} onDecrementZoom={decrementZoom} />
+            <PdfViewController zoom={zoom} onIncrementZoom={incrementZoom} onDecrementZoom={decrementZoom} currentPage={currentPage + 1} scroll={scrollToPage}/>
         </div>
     )
 }

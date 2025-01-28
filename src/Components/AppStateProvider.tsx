@@ -1,11 +1,14 @@
 import React, { createContext, useContext, useState } from "react"
 
+export type propertyOptionType = 'paperFormat' | 'fieldList' | 'properties' | 'variables'
+
 export interface AppState {
     selectedElement: null | 'text' | 'table' | 'image',
     hasUnsavedTemplate: boolean,
     hasUnsavedData : boolean,
     selectedTemplate: string | null,
-    zoom: number
+    zoom: number,
+    propertyOptionSelected: propertyOptionType
 }
 
 export interface AppStateContextType {
@@ -21,7 +24,8 @@ export const AppStateProvider : React.FC<{children : React.ReactNode}> = ({child
         hasUnsavedTemplate: false,
         hasUnsavedData: false,
         selectedTemplate: null,
-        zoom: 1
+        zoom: 1,
+        propertyOptionSelected: 'paperFormat'
     })
 
     return (

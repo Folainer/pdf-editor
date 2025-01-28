@@ -1,5 +1,6 @@
 $hoverColor: rgba($color: #000000, $alpha: 0.1);
 $shodowColor: rgba($color: #000000, $alpha: .2);
+$addidionalColor: #0ad4db;
 
 .header {
     // box-shadow: 0px 0px 5px $shodowColor;
@@ -185,7 +186,7 @@ $shodowColor: rgba($color: #000000, $alpha: .2);
                 outline: none;
 
                 &:focus {
-                    outline: 2px solid #0ad4db;
+                    outline: 2px solid $addidionalColor;
                 }
             }
 
