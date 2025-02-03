@@ -1,11 +1,16 @@
 import './PropertyMenu.scss'
-import PropertyOptions from './PropertyOptions'
+import PropertyMenuContent from './PropertyMenuContent'
+import PropertyOptions from './PropertyMenuOptions'
+import { PropertyMenuProvider } from './PropertyMenuProvider'
 
 const ProperyMenu = () => {
     return (
-        <div className='propertymenu'>
-            <PropertyOptions/>
-        </div>
+        <PropertyMenuProvider>
+            <div className='propertymenu'>
+                <PropertyOptions/>
+                <PropertyMenuContent/>
+            </div>
+        </PropertyMenuProvider>
     )
 }
 

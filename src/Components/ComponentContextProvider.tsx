@@ -1,23 +1,16 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useState } from 'react'
+import { ComponentContextType, ComponentContext } from './Types/PropertyType'
 
-
-interface ComponentContextType {
-    chooseContext: {
-        setOption: React.Dispatch<React.SetStateAction<string>> | null
-    }
-}
-
-const ComponentContextContext = createContext<ComponentContextType>({
-    chooseContext : {
-        setOption: null
-    }
-})
+const ComponentContextContext = createContext<null | ComponentContextType>(null)
 
 export const ComponentContextProvider : React.FC<{children : React.ReactNode}> = ({children}) => {
+    const [componentContext, setComponentContext] = useState<ComponentContext>({
+        setOption: null,
+        propertyOptionSelected: 'paperFormat'
+    })
+
     return (
-        <ComponentContextContext.Provider value={{chooseContext: {
-            setOption: null
-        }}}>
+        <ComponentContextContext.Provider value={{componentContext, setComponentContext}}>
             {children}
         </ComponentContextContext.Provider>
     )

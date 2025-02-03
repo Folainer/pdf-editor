@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useState } from "react"
 
-export type propertyOptionType = 'paperFormat' | 'fieldList' | 'properties' | 'variables'
+export type propertyOptionType = {
+    propertyOptionSelected: 'paperFormat' | 'fieldList' | 'properties' | 'variables'
+}
 
 export interface AppState {
     selectedElement: null | 'text' | 'table' | 'image',

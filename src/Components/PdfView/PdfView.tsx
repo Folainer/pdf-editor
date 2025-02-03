@@ -7,6 +7,7 @@ import { useJsonManager } from '../JsonManagerProvider'
 import { PdfFormat } from '../Types/PdfTypes'
 import { useEffect, useRef, useState } from 'react'
 import Multibox from './Multibox'
+import { ElementType } from '../Types/PdfViewType'
 
 const PdfView = () => {
     const {template : jsonTemplateManager} = useJsonManager()
@@ -141,7 +142,8 @@ const PdfView = () => {
                                 bottom: 0}}>
                         </div>
                         {format.elements.map(element => {
-                            if (element.type === 'multibox') {
+                            const elementType = element.type as ElementType
+                            if (elementType === 'multibox') {
                                 return <Multibox element={element} />
                             }
                         })}

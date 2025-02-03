@@ -12,7 +12,7 @@ const MenuBarChoose : React.FC<{title: string, }> = ({title}) => {
     const commandManager = useCommandManager()
 
     const componentContext = useComponentContext()
-    componentContext.chooseContext.setOption = setOption
+    componentContext.componentContext.setOption = setOption
 
     const handleClick = () => {
         if (templateJson.getAll().length === 0) {

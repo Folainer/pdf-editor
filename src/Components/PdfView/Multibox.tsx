@@ -26,12 +26,13 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
     }
 
     return (
-        <div className="pdfview__pagemultibox" contentEditable
+        <div className="pdfview__pagemultibox"
+            contentEditable
             style={{
                 fontSize: `${element.font_size}px`,
                 top: `${y}px`,
                 left: `${x}px`,
-                height: `${element.h}px`,
+                minHeight: `${element.h}px`,
                 width: `${element.w}px`,
                 borderTop: `${element.border_top}px solid`,
                 borderBottom: `${element.border_bottom}px solid`,

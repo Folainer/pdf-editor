@@ -1,3 +1,5 @@
+import { ElementType } from "react";
+
 export interface TableProps {
     name: string, 
     type: string,

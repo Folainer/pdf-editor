@@ -30,7 +30,7 @@ const MenuBar = () => {
 
         reader.onload = () => {
             try {
-                const setOption = componentContext.chooseContext.setOption
+                const setOption = componentContext.componentContext.setOption
                 if (setOption) {
                     if (typeof reader.result === 'string') {
                         const pdfFormat = validateTemplateJson(reader.result)

@@ -1,14 +1,7 @@
 import { useJsonManager } from "../JsonManagerProvider"
 import { useAppState } from "../AppStateProvider"
 import { PdfFormat } from "../Types/PdfTypes"
-
-interface PdfViewControllerProps {
-    zoom: number,
-    onIncrementZoom: () => void,
-    onDecrementZoom: () => void,
-    scroll: (pageIndex: number) => void,
-    currentPage: number
-}
+import { PdfViewControllerProps } from "../Types/PdfViewType"
 
 const PdfViewController  = ({zoom, onIncrementZoom, onDecrementZoom, currentPage, scroll} : PdfViewControllerProps) => {
     const {template : jsonTemplateManager} = useJsonManager()
