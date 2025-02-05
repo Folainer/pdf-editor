@@ -1,6 +1,14 @@
+import { useRef, useState, useEffect } from "react"
 import { SimpleElement } from "../Types/PdfTypes"
+import { useAppState } from "../AppStateProvider"
+import eventBus from "../../Logic/EventBus"
+import { ElementType } from "../Types/PdfViewType"
 
 const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
+    const multiboxRef = useRef<HTMLDivElement>(null)
+    const [isSelected, setSelected] = useState<boolean>(false)
+    const appState = useAppState().state
+    const selection = appState.selection
     let x : string, y: string
 
     if (!element.ln_x) {
@@ -25,9 +33,41 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
         alignment = 'center'
     }
 
+    const handleClickOutside = (event: MouseEvent) => {
+      if (multiboxRef.current && !multiboxRef.current.contains(event.target as Node)) {
+        setSelected(false)
+        multiboxRef.current.blur()
+        selection.clearSelection()
+      }
+    }
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        const subscription = eventBus.addListener('selectionUpdated', () => {
+            console.log('selectionChanged')
+        })
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside)
+            subscription.remove()
+        }
+      }, [])
+
     return (
         <div className="pdfview__pagemultibox"
-            contentEditable
+            ref={multiboxRef}
+            tabIndex={0}
+            onMouseDown={(e) => {
+                if (!isSelected) {
+                    e.preventDefault()
+                }
+            }}
+            onClick={() => {
+                if (!isSelected) {
+                    multiboxRef.current?.focus()
+                    setSelected(true)
+                    selection.toggleSelection(element.name, element.type as ElementType, null)
+                }
+            }}
             style={{
                 fontSize: `${element.font_size}px`,
                 top: `${y}px`,
@@ -46,7 +86,10 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
                 color: element.fontcolor,
                 overflow: element.h_adjustable ? 'hidden' : 'none'
             }}>
-            {element.txt}
+                <div
+                contentEditable>
+                {element.txt}
+                </div>
         </div>
     )
 }

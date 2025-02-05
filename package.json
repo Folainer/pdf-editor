@@ -10,12 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "fbemitter": "^3.0.0",
     "pdf-lib": "^1.17.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@types/fbemitter": "^2.0.35",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",

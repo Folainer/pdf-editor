@@ -1,6 +1,7 @@
 import { ElementType } from "../Components/Types/PdfViewType"
+import eventBus from "./EventBus"
 
-type Coords = [number, number]
+export type Coords = [number, number]
 
 
 interface SelectedElementType {
@@ -75,6 +76,7 @@ export default class SelectionManager {
                 }
             }
         }
+        eventBus.emit('selectionUpdated')
     }
 
     // disselect() : void // later
@@ -82,6 +84,7 @@ export default class SelectionManager {
     clearSelection() {
         this.selection.lastSelected = null
         this.selection.selectedElements = []
+        eventBus.emit('selectionUpdated')
     }
 
     toggleSelection(id: string, type: ElementType, selectedCell: Coords | null = null) {

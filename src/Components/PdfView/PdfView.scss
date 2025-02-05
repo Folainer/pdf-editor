@@ -38,6 +38,8 @@ $addidionalColor: #0ad4db;
 
             .pdfview__pagemultibox {
                 position: absolute;
+                background-color: transparent;
+                resize: none;
 
                 &:focus {
                     overflow: none;

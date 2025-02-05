@@ -1,8 +1,5 @@
 import React, { createContext, useContext, useState } from "react"
-
-export type propertyOptionType = {
-    propertyOptionSelected: 'paperFormat' | 'fieldList' | 'properties' | 'variables'
-}
+import SelectionManager from "../Logic/SelectionManager"
 
 export interface AppState {
     selectedElement: null | 'text' | 'table' | 'image',
@@ -10,7 +7,7 @@ export interface AppState {
     hasUnsavedData : boolean,
     selectedTemplate: string | null,
     zoom: number,
-    propertyOptionSelected: propertyOptionType
+    selection: SelectionManager
 }
 
 export interface AppStateContextType {
@@ -27,7 +24,7 @@ export const AppStateProvider : React.FC<{children : React.ReactNode}> = ({child
         hasUnsavedData: false,
         selectedTemplate: null,
         zoom: 1,
-        propertyOptionSelected: 'paperFormat'
+        selection: new SelectionManager()
     })
 
     return (
