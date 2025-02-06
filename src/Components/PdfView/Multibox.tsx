@@ -3,12 +3,24 @@ import { SimpleElement } from "../Types/PdfTypes"
 import { useAppState } from "../AppStateProvider"
 import eventBus from "../../Logic/EventBus"
 import { ElementType } from "../Types/PdfViewType"
+import { ElementSelectionType, SelectCommand } from "../../Logic/Command/SelectCommand"
+import { useCommandManager } from "../CommandManagerProvider"
 
 const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
     const multiboxRef = useRef<HTMLDivElement>(null)
     const [isSelected, setSelected] = useState<boolean>(false)
+    const commandManager = useCommandManager()
     const appState = useAppState().state
     const selection = appState.selection
+    const lastSelected = selection.getLastSelectedElement()
+    let oldSelection : ElementSelectionType | null = null
+    if (lastSelected) {
+        oldSelection = {
+            type: lastSelected.type,
+            name: lastSelected.name,
+            selectedCell: lastSelected.selectedCell
+        }
+    }
     let x : string, y: string
 
     if (!element.ln_x) {
@@ -37,14 +49,29 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
       if (multiboxRef.current && !multiboxRef.current.contains(event.target as Node)) {
         setSelected(false)
         multiboxRef.current.blur()
-        selection.clearSelection()
+
+        if (!selection.isCleared()) {
+            const selectionCmd = new SelectCommand(selection, null, oldSelection)
+            commandManager.execute(selectionCmd)
+        }
       }
     }
 
+
     useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside)
         const subscription = eventBus.addListener('selectionUpdated', () => {
-            console.log('selectionChanged')
+            const elementSelection : ElementSelectionType | null = {
+                name: element.name,
+                type: element.type as ElementType,
+                selectedCell: null
+            }
+            
+            if (selection.isSameElement(elementSelection)) {
+                multiboxRef.current?.focus()
+            } else {
+                multiboxRef.current?.blur()
+            }
         })
         return () => {
             document.removeEventListener("mousedown", handleClickOutside)
@@ -53,7 +80,7 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
       }, [])
 
     return (
-        <div className="pdfview__pagemultibox"
+        <div id={element.name} className="pdfview__pagemultibox"
             ref={multiboxRef}
             tabIndex={0}
             onMouseDown={(e) => {
@@ -66,6 +93,8 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
                     multiboxRef.current?.focus()
                     setSelected(true)
                     selection.toggleSelection(element.name, element.type as ElementType, null)
+                    const selectionCmd = new SelectCommand(selection, {name: element.name, type: element.type as ElementType, selectedCell: null}, oldSelection)
+                    commandManager.execute(selectionCmd)
                 }
             }}
             style={{
@@ -87,7 +116,8 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
                 overflow: element.h_adjustable ? 'hidden' : 'none'
             }}>
                 <div
-                contentEditable>
+                // contentEditable
+                >
                 {element.txt}
                 </div>
         </div>

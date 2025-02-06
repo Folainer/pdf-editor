@@ -1,24 +1,19 @@
 import { ElementType } from "../Components/Types/PdfViewType"
+import { ElementSelectionType } from "./Command/SelectCommand"
 import eventBus from "./EventBus"
 
 export type Coords = [number, number]
 
 
 interface SelectedElementType {
-    id: string,
+    name: string,
     type: ElementType,
     selectedCells: Coords[] | null
 }
 
-interface LastSelectedType {
-    id: string,
-    type: ElementType,
-    selectedCell: Coords | null
-}
-
 interface SelectionType {
     selectedElements: SelectedElementType[],
-    lastSelected: LastSelectedType | null
+    lastSelected: ElementSelectionType | null
 }
 
 export default class SelectionManager {
@@ -39,28 +34,28 @@ export default class SelectionManager {
         return this.selection.selectedElements
     }
 
-    getLastSelectedElement() : LastSelectedType | null {
+    getLastSelectedElement() : ElementSelectionType | null {
         return this.selection.lastSelected
     }
 
-    select(id: string, type: ElementType, selectedCell: Coords | null = null) : void {
-        this.selection.lastSelected = {id, type, selectedCell}
+    select(name: string, type: ElementType, selectedCell: Coords | null = null) : void {
+        this.selection.lastSelected = {name, type, selectedCell}
         if (type !== 'table') {
             this.selection.selectedElements.push({
-                id: id,
+                name: name,
                 type: type,
                 selectedCells: null
             })
         } else {
             const selectedTable = this.selection.selectedElements.find(table => {
-                if (id === table.id) {
+                if (name === table.name) {
                     return table
                 }
             })
 
             if (!selectedTable) {
                 this.selection.selectedElements.push({
-                    id: id,
+                    name: name,
                     type: type,
                     selectedCells: selectedCell ? [selectedCell] : null
                 })
@@ -87,8 +82,25 @@ export default class SelectionManager {
         eventBus.emit('selectionUpdated')
     }
 
-    toggleSelection(id: string, type: ElementType, selectedCell: Coords | null = null) {
+    toggleSelection(name: string, type: ElementType, selectedCell: Coords | null = null) {
         this.clearSelection() // clear all selection
-        this.select(id, type, selectedCell) // add new selection
+        this.select(name, type, selectedCell) // add new selection
+    }
+
+    isSameElement(element: ElementSelectionType | null) {
+        const lastSelected = this.selection.lastSelected
+        if (element?.name === lastSelected?.name && element?.type === lastSelected?.type && element?.selectedCell && lastSelected?.type) {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    isCleared() {
+        if (Array.isArray(this.selection.selectedElements) && this.selection.selectedElements.length === 0) {
+            return true
+        } else {
+            return false
+        }
     }
 }
