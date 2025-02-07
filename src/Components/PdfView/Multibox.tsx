@@ -60,19 +60,29 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
 
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside)
-        const subscription = eventBus.addListener('selectionUpdated', () => {
-            const elementSelection : ElementSelectionType | null = {
-                name: element.name,
-                type: element.type as ElementType,
-                selectedCell: null
+
+        let isHandlingSelection = false
+
+        const subscription = eventBus.addListener('selectionChanged', (type: string) => {
+            
+            if (type === 'update') {
+                if (isSelected) {
+                    multiboxRef.current?.classList.add('pdfview__pagemultibox--selected')
+                }
+                
+            } else if (type === 'clear') {
+                if (isHandlingSelection) return
+                isHandlingSelection = true
+
+                console.log(type, element.name)
+                multiboxRef.current?.classList.remove('pdfview__pagemultibox--selected')
             }
             
-            if (selection.isSameElement(elementSelection)) {
-                multiboxRef.current?.focus()
-            } else {
-                multiboxRef.current?.blur()
-            }
+            setTimeout(() => {
+                isHandlingSelection = false
+            }, 0)
         })
+
         return () => {
             document.removeEventListener("mousedown", handleClickOutside)
             subscription.remove()
@@ -89,10 +99,9 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
                 }
             }}
             onClick={() => {
+                multiboxRef.current?.classList.add('pdfview__pagemultibox--selected')
                 if (!isSelected) {
-                    multiboxRef.current?.focus()
                     setSelected(true)
-                    selection.toggleSelection(element.name, element.type as ElementType, null)
                     const selectionCmd = new SelectCommand(selection, {name: element.name, type: element.type as ElementType, selectedCell: null}, oldSelection)
                     commandManager.execute(selectionCmd)
                 }

@@ -41,7 +41,7 @@ $addidionalColor: #0ad4db;
                 background-color: transparent;
                 resize: none;
 
-                &:focus {
+                &--selected {
                     overflow: none;
                     outline: 1px solid $addidionalColor;
                     border-radius: 1px;

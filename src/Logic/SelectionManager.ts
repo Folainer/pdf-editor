@@ -52,7 +52,7 @@ export default class SelectionManager {
                     return table
                 }
             })
-
+            
             if (!selectedTable) {
                 this.selection.selectedElements.push({
                     name: name,
@@ -71,7 +71,8 @@ export default class SelectionManager {
                 }
             }
         }
-        eventBus.emit('selectionUpdated')
+        console.log('Selecting:', name, type)
+        eventBus.emit('selectionChanged', 'update')
     }
 
     // disselect() : void // later
@@ -79,7 +80,7 @@ export default class SelectionManager {
     clearSelection() {
         this.selection.lastSelected = null
         this.selection.selectedElements = []
-        eventBus.emit('selectionUpdated')
+        eventBus.emit('selectionChanged', 'clear')
     }
 
     toggleSelection(name: string, type: ElementType, selectedCell: Coords | null = null) {
@@ -89,11 +90,14 @@ export default class SelectionManager {
 
     isSameElement(element: ElementSelectionType | null) {
         const lastSelected = this.selection.lastSelected
-        if (element?.name === lastSelected?.name && element?.type === lastSelected?.type && element?.selectedCell && lastSelected?.type) {
-            return true
-        } else {
-            return false
-        }
+        return (
+            element?.name === lastSelected?.name && 
+            element?.type === lastSelected?.type &&
+            (
+                (element?.selectedCell === lastSelected?.selectedCell) || 
+                (element?.selectedCell === null && lastSelected?.selectedCell === null)
+            )
+        )
     }
 
     isCleared() {

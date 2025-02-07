@@ -14,20 +14,28 @@ export class SelectCommand implements Command {
     }
 
     execute(): void {
-        // console.log(this.newSelection?.name, this.newSelection?.type, this.newSelection?.selectedCell)
         if (this.newSelection) {
-            this.selectionManager.toggleSelection(this.newSelection.name, this.newSelection.type, this.newSelection.selectedCell)
+            this.selectionManager.clearSelection();
+            this.selectionManager.select(
+                this.newSelection.name, 
+                this.newSelection.type, 
+                this.newSelection.selectedCell
+            );
         } else {
-            this.selectionManager.clearSelection()
+            this.selectionManager.clearSelection();
         }
     }
 
     undo(): void {
-        // console.log(this.oldSelection?.name, this.oldSelection?.type, this.oldSelection?.selectedCell)
         if (this.oldSelection) {
-            this.selectionManager.toggleSelection(this.oldSelection.name, this.oldSelection.type, this.oldSelection.selectedCell)
+            this.selectionManager.clearSelection();
+            this.selectionManager.select(
+                this.oldSelection.name, 
+                this.oldSelection.type, 
+                this.oldSelection.selectedCell
+            );
         } else {
-            this.selectionManager.clearSelection()
+            this.selectionManager.clearSelection();
         }
     }
 }
