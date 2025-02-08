@@ -3,7 +3,7 @@ import { SimpleElement } from "../Types/PdfTypes"
 import { useAppState } from "../AppStateProvider"
 import eventBus from "../../Logic/EventBus"
 import { ElementType } from "../Types/PdfViewType"
-import { ElementSelectionType, SelectCommand } from "../../Logic/Command/SelectCommand"
+import { SelectCommand } from "../../Logic/Command/SelectCommand"
 import { useCommandManager } from "../CommandManagerProvider"
 
 const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
@@ -12,15 +12,6 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
     const commandManager = useCommandManager()
     const appState = useAppState().state
     const selection = appState.selection
-    const lastSelected = selection.getLastSelectedElement()
-    let oldSelection : ElementSelectionType | null = null
-    if (lastSelected) {
-        oldSelection = {
-            type: lastSelected.type,
-            name: lastSelected.name,
-            selectedCell: lastSelected.selectedCell
-        }
-    }
     let x : string, y: string
 
     if (!element.ln_x) {
@@ -45,28 +36,29 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
         alignment = 'center'
     }
 
-    const handleClickOutside = (event: MouseEvent) => {
-      if (multiboxRef.current && !multiboxRef.current.contains(event.target as Node)) {
-        setSelected(false)
-        multiboxRef.current.blur()
-
-        if (!selection.isCleared()) {
-            const selectionCmd = new SelectCommand(selection, null, oldSelection)
-            commandManager.execute(selectionCmd)
-        }
-      }
-    }
-
-
     useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (multiboxRef.current && !multiboxRef.current.contains(event.target as Node)) {
+              setSelected(false)
+              multiboxRef.current?.classList.remove('pdfview__pagemultibox--selected')
+      
+              if (!selection.isCleared()) {
+                  const selectionCmd = new SelectCommand(selection, null, selection.getPreviousSelected())
+                  commandManager.execute(selectionCmd)
+              }
+            }
+          }
+
         document.addEventListener("mousedown", handleClickOutside)
 
         let isHandlingSelection = false
 
-        const subscription = eventBus.addListener('selectionChanged', (type: string) => {
+        const subscription = eventBus.addListener('selectionChanged', (event: { type: string, name: string }) => {
+            const { type, name } = event;
             
             if (type === 'update') {
-                if (isSelected) {
+                // console.log('Comp:', name, element.name, 'type:', type)
+                if (name === element.name) {
                     multiboxRef.current?.classList.add('pdfview__pagemultibox--selected')
                 }
                 
@@ -74,10 +66,10 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
                 if (isHandlingSelection) return
                 isHandlingSelection = true
 
-                console.log(type, element.name)
+                // console.log('Comp:', name, element.name, 'type:', type)
                 multiboxRef.current?.classList.remove('pdfview__pagemultibox--selected')
             }
-            
+
             setTimeout(() => {
                 isHandlingSelection = false
             }, 0)
@@ -102,7 +94,7 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
                 multiboxRef.current?.classList.add('pdfview__pagemultibox--selected')
                 if (!isSelected) {
                     setSelected(true)
-                    const selectionCmd = new SelectCommand(selection, {name: element.name, type: element.type as ElementType, selectedCell: null}, oldSelection)
+                    const selectionCmd = new SelectCommand(selection, {name: element.name, type: element.type as ElementType, selectedCell: null}, selection.getPreviousSelected())
                     commandManager.execute(selectionCmd)
                 }
             }}

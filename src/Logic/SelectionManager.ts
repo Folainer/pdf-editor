@@ -18,12 +18,14 @@ interface SelectionType {
 
 export default class SelectionManager {
     private selection: SelectionType
+    private lastLastSelected: ElementSelectionType | null
 
     constructor() {
         this.selection = {
             selectedElements: [],
             lastSelected: null
         }
+        this.lastLastSelected = null
     }
 
     getSelection() : SelectionType {
@@ -39,7 +41,7 @@ export default class SelectionManager {
     }
 
     select(name: string, type: ElementType, selectedCell: Coords | null = null) : void {
-        this.selection.lastSelected = {name, type, selectedCell}
+        this.setLastSelected({name, type, selectedCell})
         if (type !== 'table') {
             this.selection.selectedElements.push({
                 name: name,
@@ -71,16 +73,16 @@ export default class SelectionManager {
                 }
             }
         }
-        console.log('Selecting:', name, type)
-        eventBus.emit('selectionChanged', 'update')
+        // console.log('Selecting:', name, type)
+        eventBus.emit('selectionChanged', { type: 'update', name: name})
     }
 
     // disselect() : void // later
 
     clearSelection() {
-        this.selection.lastSelected = null
+        this.setLastSelected(null)
         this.selection.selectedElements = []
-        eventBus.emit('selectionChanged', 'clear')
+        eventBus.emit('selectionChanged', { type:'clear', name: null})
     }
 
     toggleSelection(name: string, type: ElementType, selectedCell: Coords | null = null) {
@@ -106,5 +108,14 @@ export default class SelectionManager {
         } else {
             return false
         }
+    }
+
+    setLastSelected(value: ElementSelectionType | null) {
+        this.lastLastSelected = this.selection.lastSelected
+        this.selection.lastSelected = value
+    }
+
+    getPreviousSelected() {
+        return this.lastLastSelected
     }
 }

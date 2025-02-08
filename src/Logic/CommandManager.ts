@@ -16,6 +16,7 @@ export default class CommandManager implements CommandManagerType {
     execute(command: Command) {
         command.execute()
         this.history.push(command)
+        console.log(this.history.length)
         this.undoStack = []
     }
 

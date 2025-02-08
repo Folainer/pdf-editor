@@ -10,7 +10,7 @@ export interface ElementSelectionType {
 
 export class SelectCommand implements Command {
     constructor(private selectionManager : SelectionManager, private newSelection : ElementSelectionType | null, private oldSelection : ElementSelectionType | null) {
-
+        console.log('Command:', newSelection, oldSelection)
     }
 
     execute(): void {
