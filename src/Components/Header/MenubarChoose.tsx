@@ -29,7 +29,7 @@ const MenuBarChoose : React.FC<{title: string, }> = ({title}) => {
     const templateJson = useJsonManager().template
 
     return (
-        <div title={title} onClick={() => handleClick()} className={`menubar__choose ${isOpen && 'menubar__choose_open'}`}>
+        <div title={title} onClick={() => handleClick()} className={`menubar__choose ${isOpen && 'menubar__choose--open'}`}>
             <div className="menubar__chooseoption"> 
                 <span>{option}</span>
                 <img src="/img/chooseOptions.png" />

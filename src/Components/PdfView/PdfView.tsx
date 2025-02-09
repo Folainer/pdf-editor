@@ -98,10 +98,10 @@ const PdfView = () => {
                 style={{
                     // gap: `${20 * 2}px`
                 }}>
-                {selectedTemplateJson && selectedTemplateJson.formats.map((format, index) => (
+                {selectedTemplateJson && selectedTemplateJson.formats.map((format) => (
                 <div 
                     className='pdfview__page'
-                    key={index}
+                    key={JSON.stringify(format)}
                     style={{
                         width: `${format.w}px`,
                         height: `${format.h}px`,
@@ -144,7 +144,7 @@ const PdfView = () => {
                         {format.elements.map(element => {
                             const elementType = element.type as ElementType
                             if (elementType === 'multibox') {
-                                return <Multibox element={element} />
+                                return <Multibox id={element.name} element={element} />
                             }
                         })}
                 </div>

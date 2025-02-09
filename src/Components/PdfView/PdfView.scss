@@ -1,14 +1,11 @@
-$shadowColor: rgba($color: #000000, $alpha: .2);
-$hoverColor: rgba($color: #000000, $alpha: .1);
-$pagePaddingColor: rgba(255, 0, 0, 0.2);
-$addidionalColor: #0ad4db;
+@use '../Sass/colors' as *;
 
 .pdfview {
     grid-area: pdfview;
     overflow: hidden;
     position: relative;
     
-    .pdfview__wrapper {
+    &__wrapper {
         position: relative;
         overflow: scroll;
         height: 100%;
@@ -30,13 +27,13 @@ $addidionalColor: #0ad4db;
             background-color: white;
             border-radius: 1px;
 
-            .pdfview__pagepaddings {
+            &paddings {
                 display: block;
                 position: absolute;
                 background-color: $pagePaddingColor;
             }
 
-            .pdfview__pagemultibox {
+            &multibox {
                 position: absolute;
                 background-color: transparent;
                 resize: none;
@@ -47,10 +44,6 @@ $addidionalColor: #0ad4db;
                     border-radius: 1px;
                 }
             }
-
-            // &:last-child {
-            //     margin-bottom: 50px;
-            // }
         }
     }
 
@@ -66,16 +59,12 @@ $addidionalColor: #0ad4db;
         box-shadow: 0 0 5px $shadowColor;
         border-radius: 5px;
 
-        .pdfview__controllerpage {
-            padding: 1px;
-        }
-
-        .pdfview__controllerscale {
+        &scale {
             display: flex;
             padding: 1px;
             margin-left: 10px;
 
-            .pdfview__controllerscaleminus {
+            &minus {
                 display: flex;
                 height: 20px;
                 width: 20px;
@@ -89,7 +78,7 @@ $addidionalColor: #0ad4db;
                 }
             }
 
-            .pdfview__controllerscaleplus {
+            &plus {
                 display: flex;
                 height: 20px;
                 width: 20px;
@@ -103,16 +92,17 @@ $addidionalColor: #0ad4db;
                 }
             }
 
-            .pdfview__controllerscalevalue {
+            &value {
                 margin: 0 5px;
                 font-weight: 800;
             }
         }
 
-        .pdfview__controllerpage {
+        &page {
+            padding: 1px;
             display: flex;
 
-            .pdfview__controllerpageleft {
+            &left {
                 height: 20px;
                 width: 20px;
                 border-radius: 2px;
@@ -134,7 +124,7 @@ $addidionalColor: #0ad4db;
             }
         }
 
-        .pdfview__controllerpageright {
+        &pageright {
             height: 20px;
             width: 20px;
             border-radius: 2px;

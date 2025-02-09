@@ -6,7 +6,7 @@ import { ElementType } from "../Types/PdfViewType"
 import { SelectCommand } from "../../Logic/Command/SelectCommand"
 import { useCommandManager } from "../CommandManagerProvider"
 
-const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
+const Multibox : React.FC<{element : SimpleElement, id: string}> = ({element, id}) => {
     const multiboxRef = useRef<HTMLDivElement>(null)
     const [isSelected, setSelected] = useState<boolean>(false)
     const commandManager = useCommandManager()
@@ -39,15 +39,16 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (multiboxRef.current && !multiboxRef.current.contains(event.target as Node)) {
-              setSelected(false)
-              multiboxRef.current?.classList.remove('pdfview__pagemultibox--selected')
-      
-              if (!selection.isCleared()) {
-                  const selectionCmd = new SelectCommand(selection, null, selection.getPreviousSelected())
-                  commandManager.execute(selectionCmd)
-              }
+                setSelected(false)
+                multiboxRef.current?.classList.remove('pdfview__pagemultibox--selected')
+            
+                if (!selection.isCleared()) {
+                    const selectionCmd = new SelectCommand(selection, null, selection.getPreviousSelected())
+                    commandManager.execute(selectionCmd)
+                }
+    
             }
-          }
+        }
 
         document.addEventListener("mousedown", handleClickOutside)
 
@@ -82,10 +83,11 @@ const Multibox : React.FC<{element : SimpleElement}> = ({element}) => {
       }, [])
 
     return (
-        <div id={element.name} className="pdfview__pagemultibox"
+        <div id={id} className="pdfview__pagemultibox"
             ref={multiboxRef}
             tabIndex={0}
             onMouseDown={(e) => {
+                // e.stopPropagation()
                 if (!isSelected) {
                     e.preventDefault()
                 }
