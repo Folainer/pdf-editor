@@ -43,8 +43,8 @@ const Multibox : React.FC<{element : SimpleElement, id: string}> = ({element, id
                 multiboxRef.current?.classList.remove('pdfview__pagemultibox--selected')
             
                 if (!selection.isCleared()) {
-                    const selectionCmd = new SelectCommand(selection, null, selection.getPreviousSelected())
-                    commandManager.execute(selectionCmd)
+                    // const selectionCmd = new SelectCommand(selection, null, selection.getPreviousSelected())
+                    // commandManager.execute(selectionCmd)
                 }
     
             }
@@ -96,8 +96,8 @@ const Multibox : React.FC<{element : SimpleElement, id: string}> = ({element, id
                 multiboxRef.current?.classList.add('pdfview__pagemultibox--selected')
                 if (!isSelected) {
                     setSelected(true)
-                    const selectionCmd = new SelectCommand(selection, {name: element.name, type: element.type as ElementType, selectedCell: null}, selection.getPreviousSelected())
-                    commandManager.execute(selectionCmd)
+                    // const selectionCmd = new SelectCommand(selection, {name: element.name, type: element.type as ElementType, selectedCell: null}, selection.getPreviousSelected())
+                    // commandManager.execute(selectionCmd)
                 }
             }}
             style={{
