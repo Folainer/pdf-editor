@@ -2,14 +2,14 @@ import { useRef, useState, useEffect } from "react"
 import { SimpleElement } from "../Types/PdfTypes"
 import { useAppState } from "../AppStateProvider"
 import eventBus from "../../Logic/EventBus"
-import { ElementType } from "../Types/PdfViewType"
-import { SelectCommand } from "../../Logic/Command/SelectCommand"
-import { useCommandManager } from "../CommandManagerProvider"
+// import { ElementType } from "../Types/PdfViewType"
+// import { SelectCommand } from "../../Logic/Command/SelectCommand"
+// import { useCommandManager } from "../CommandManagerProvider"
 
 const Multibox : React.FC<{element : SimpleElement, id: string}> = ({element, id}) => {
     const multiboxRef = useRef<HTMLDivElement>(null)
     const [isSelected, setSelected] = useState<boolean>(false)
-    const commandManager = useCommandManager()
+    // const commandManager = useCommandManager()
     const appState = useAppState().state
     const selection = appState.selection
     let x : string, y: string

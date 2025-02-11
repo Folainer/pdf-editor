@@ -26,6 +26,7 @@ export const validateTemplateJson = (jsonString: string) => {
 
         pdfFormat.formats.forEach(format => {
             const hasFormatProps = (
+                typeof format.id === 'string' &&
                 typeof format.w === 'string' &&
                 typeof format.h === 'string' &&
                 typeof format.padding_top === 'string' &&

@@ -7,7 +7,8 @@ export interface AppState {
     hasUnsavedData : boolean,
     selectedTemplate: string | null,
     zoom: number,
-    selection: SelectionManager
+    selection: SelectionManager,
+    currentPage: number
 }
 
 export interface AppStateContextType {
@@ -24,7 +25,8 @@ export const AppStateProvider : React.FC<{children : React.ReactNode}> = ({child
         hasUnsavedData: false,
         selectedTemplate: null,
         zoom: 1,
-        selection: new SelectionManager()
+        selection: new SelectionManager(),
+        currentPage: 0
     })
 
     return (

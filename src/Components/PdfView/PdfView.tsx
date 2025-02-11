@@ -8,6 +8,7 @@ import { PdfFormat } from '../Types/PdfTypes'
 import { useEffect, useRef, useState } from 'react'
 import Multibox from './Multibox'
 import { ElementType } from '../Types/PdfViewType'
+import eventBus from '../../Logic/EventBus'
 
 const PdfView = () => {
     const {template : jsonTemplateManager} = useJsonManager()
@@ -15,6 +16,7 @@ const PdfView = () => {
     const selectedTemplate = appState.selectedTemplate
     const containerRef = useRef<HTMLDivElement>(null)
     const [currentPage, setCurrentPage] = useState<number>(0)
+    const [, updateComponent] = useState<number>(0)
 
     let selectedTemplateJson: null | PdfFormat = null
     if (selectedTemplate) {
@@ -54,6 +56,11 @@ const PdfView = () => {
     }
 
     useEffect(() => {
+        const forceUpdate = () => updateComponent((prev) => prev + 1)
+
+
+        const rendnderListener = eventBus.addListener('rerenderPdfView', forceUpdate)
+
         const handleScroll = () => {
             if (!containerRef.current || !containerRef) return;
 
@@ -79,6 +86,10 @@ const PdfView = () => {
             });
 
             setCurrentPage(currentPageIndex); // Update the current page state
+            setAppState(prev => ({
+                ...prev,
+                currentPage: currentPageIndex
+            }))
         }
 
         const container = containerRef.current;
@@ -86,6 +97,8 @@ const PdfView = () => {
 
         return () => {
         container?.removeEventListener("scroll", handleScroll);
+
+        rendnderListener.remove()
         };
     }, [])
 
@@ -101,7 +114,7 @@ const PdfView = () => {
                 {selectedTemplateJson && selectedTemplateJson.formats.map((format) => (
                 <div 
                     className='pdfview__page'
-                    key={JSON.stringify(format)}
+                    key={format.id}
                     style={{
                         width: `${format.w}px`,
                         height: `${format.h}px`,

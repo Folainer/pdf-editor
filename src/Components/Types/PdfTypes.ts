@@ -1,5 +1,3 @@
-import { ElementType } from "react";
-
 export interface TableProps {
     name: string, 
     type: string,
@@ -56,6 +54,7 @@ export interface TableElement extends SimpleElement {
 }
 
 export interface Format {
+    id: string,
     w: string;
     h: string;
     padding_top: string;

@@ -9,6 +9,7 @@ import { useJsonManager } from "../JsonManagerProvider"
 import { useAppState } from "../AppStateProvider"
 import { useComponentContext } from "../ComponentContextProvider"
 import { validateTemplateJson } from '../../Logic/Validator'
+import { PageCommand } from '../../Logic/Command/PageCommand'
 
 const MenuBar = () => {
     const [activeMenu, setActiveMenu] = useState<string | null>(null)
@@ -65,11 +66,17 @@ const MenuBar = () => {
                 },
                 {
                     name: 'Add page after',
-                    handling: () => alert('Command is not available')
+                    handling: () => {
+                        const pageCommand = new PageCommand(appState.state, jsonManager.template, 'add', appState.state.currentPage)
+                        commandManager.execute(pageCommand)
+                    }
                 },
                 {
                     name: 'Remove current page',
-                    handling: () => alert('Command is not available')
+                    handling: () => {
+                        const pageCommand = new PageCommand(appState.state, jsonManager.template, 'remove', appState.state.currentPage)
+                        commandManager.execute(pageCommand)
+                    }
                 },
             ],
         },
